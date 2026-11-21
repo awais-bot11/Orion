@@ -2761,23 +2761,140 @@ async def start(event):
         # Agar photo mein error aye toh simple text bhej de
         await event.reply(premium_emoji(caption), buttons=buttons, parse_mode='html')
 
+# ===================== BUTTONS KA LOGIC =====================
+
+# 1. CHECKER BUTTON (Isme user ko batayega ke file kaise bhejni hai)
 @bot.on(events.CallbackQuery(data=b"btn_checker"))
 async def cb_checker(event):
-    await event.answer("Checker feature coming soon...", alert=True)
-    # Yahan tum apna checker start karne ka logic likh sakte ho
+    text = """<b>⚡ FOR IT CHECKER ⚡</b>
 
+To start checking, please send your CC file or use the commands below:
+
+📁 <b>How to use:</b>
+1. Send a <code>.txt</code> file with cards.
+2. Reply to that file with <code>/chk</code> for Shopify or <code>/rz</code> for Razorpay.
+
+💡 <b>Single Card Check:</b>
+<code>/cc 4111111111111111|12|2025|123</code>
+
+👇 <b>Select Gateway:</b>"""
+    
+    buttons = [
+        [Button.inline("Shopify Checker", b"chk_shopify"), Button.inline("Razorpay Checker", b"chk_razorpay")],
+        [Button.inline("⬅️ Back to Menu", b"btn_back")]
+    ]
+    await event.edit(premium_emoji(text), buttons=buttons, parse_mode='html')
+
+# 2. BUY PLAN BUTTON (Isme pricing/plans dikhayega)
 @bot.on(events.CallbackQuery(data=b"btn_buy"))
 async def cb_buy(event):
-    await event.answer("Contact Admin to buy plan!", alert=True)
+    text = """<b>💳 BUY PREMIUM PLANS 💳</b>
 
+Upgrade your account to get unlimited access:
+
+💎 <b>1 Day Plan:</b> $5
+💎 <b>7 Days Plan:</b> $20
+💎 <b>30 Days Plan:</b> $50
+
+<b>Payment Methods:</b> Crypto, UPI, Binance
+
+Contact Admin to purchase: @YourAdminUsername"""
+    
+    buttons = [
+        [Button.url("Message Admin", "https://t.me/YourAdminUsername")],
+        [Button.inline("⬅️ Back to Menu", b"btn_back")]
+    ]
+    await event.edit(premium_emoji(text), buttons=buttons, parse_mode='html')
+
+# 3. TOOLS BUTTON (Isme saare tools ki list aayegi)
 @bot.on(events.CallbackQuery(data=b"btn_tools"))
 async def cb_tools(event):
-    await event.answer("Tools menu coming soon...", alert=True)
+    text = """<b>🛠️ TOOLS MENU 🛠️</b>
 
+Select a tool from the options below:
+
+• <b>CC Splitter:</b> Split big files into small chunks.
+• <b>Site Checker:</b> Check if sites are alive or dead.
+• <b>Proxy Checker:</b> Test your proxies.
+• <b>BIN Lookup:</b> Get card bank info."""
+
+    buttons = [
+        [Button.inline("Split CC File", b"tool_split"), Button.inline("Check Sites", b"tool_site")],
+        [Button.inline("Check Proxies", b"tool_proxy"), Button.inline("BIN Lookup", b"tool_bin")],
+        [Button.inline("⬅️ Back to Menu", b"btn_back")]
+    ]
+    await event.edit(premium_emoji(text), buttons=buttons, parse_mode='html')
+
+# 4. SUPPORT BUTTON (Direct admin se contact karne ke liye)
 @bot.on(events.CallbackQuery(data=b"btn_support"))
 async def cb_support(event):
-    await event.answer("Support: @YourSupportUsername", alert=True)
- 
+    text = """<b>💬 SUPPORT CENTER 💬</b>
+
+Need help? Our support team is ready to assist you.
+
+<b>Admin:</b> @YourAdminUsername
+<b>Support Group:</b> @YourGroupUsername
+
+Click the button below to message directly."""
+
+    buttons = [
+        [Button.url("Contact Admin", "https://t.me/YourAdminUsername")],
+        [Button.inline("⬅️ Back to Menu", b"btn_back")]
+    ]
+    await event.edit(premium_emoji(text), buttons=buttons, parse_mode='html')
+
+
+# ===================== TOOLS KE SUB-BUTTONS =====================
+
+@bot.on(events.CallbackQuery(data=b"tool_split"))
+async def tool_split(event):
+    await event.answer("📁 Reply to a .txt file with /split 100", alert=True)
+
+@bot.on(events.CallbackQuery(data=b"tool_site"))
+async def tool_site(event):
+    await event.answer("🌐 Send /site to check all sites status", alert=True)
+
+@bot.on(events.CallbackQuery(data=b"tool_proxy"))
+async def tool_proxy(event):
+    await event.answer("🔌 Send /proxy to check proxies", alert=True)
+
+@bot.on(events.CallbackQuery(data=b"tool_bin"))
+async def tool_bin(event):
+    await event.answer("💳 Send /bin 411111 to get BIN info", alert=True)
+
+
+# ===================== BACK BUTTON (Menu wapas laane ke liye) =====================
+@bot.on(events.CallbackQuery(data=b"btn_back"))
+async def cb_back(event):
+    user_id = event.sender_id
+    
+    try:
+        sender = await bot.get_entity(user_id)
+        first_name = sender.first_name or "User"
+    except:
+        first_name = "User"
+        
+    if is_admin(user_id):
+        access = "👑 ADMIN"
+    elif is_premium(user_id):
+        access = "💎 PREMIUM"
+    else:
+        access = "❌ FREE"
+
+    caption = f"""👑 <b>USER:</b> <i>{first_name}</i>
+✅ <b>USER ID:</b> <code>{user_id}</code>
+👑 <b>ACCESS:</b> {access}
+
+👇 <b>SELECT AN OPTION BELOW:</b>"""
+
+    buttons = [
+        [Button.inline("CHECKER", b"btn_checker"), Button.inline("BUY PLAN", b"btn_buy")],
+        [Button.inline("TOOLS", b"btn_tools"), Button.inline("SUPPORT", b"btn_support")],
+        [Button.url("UPDATES", "https://t.me/your_channel"), Button.url("GROUP", "https://t.me/your_group")]
+    ]
+    
+    await event.edit(premium_emoji(caption), buttons=buttons, parse_mode="html")
+
 # ---- CALLBACK MENUS ----
 @bot.on(events.CallbackQuery(pattern=b"checker"))
 async def checker_menu(event):
