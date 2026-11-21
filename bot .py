@@ -19,8 +19,10 @@ import urllib.parse
 
 # ===================== MULTIPLE SHOPIFY APIS =====================
 SHOPIFY_APIS = [
-    "https://nemesisshopify-production-807f.up.railway.app/shopify",
-]
+    'https://afunx-0cece6049c30.herokuapp.com/shopify',
+    'https://afuona-2e2060d202b7.herokuapp.com/shopify',
+    'https://afuonax-757112f9aa0f.herokuapp.com/shopify'
+    ]
 
 def get_api():
     return random.choice(SHOPIFY_APIS)
@@ -28,9 +30,9 @@ def get_api():
 # Bot Configuration
 API_ID = 21124241
 API_HASH = 'b7ddce3d3683f54be788fddae73fa468'
-BOT_TOKEN = '8692522690:AAHwKhCs7VgnRNwchV1a-pwip09HFNEmPH4'
+BOT_TOKEN = '8951020709:AAFZOHxEjUAXwJLZ_dznrEfN_tg69xy7HsM'
 ADMIN_ID = 6124760730
-KEY_ADMINS = {6124760730, 8831047905}
+KEY_ADMINS = {6124760730,}
 
 # Channel configuration
 CHANNEL_ID = -1003681098722
