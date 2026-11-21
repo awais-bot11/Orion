@@ -1783,6 +1783,124 @@ async def user_add_site(event):
     except Exception:
         await status_msg.edit(premium_emoji("❌ Test Failed! Not Added."), parse_mode="html")
 
+# ---- /site (Check Sites & Auto-Delete Dead) ----
+@bot.on(events.NewMessage(pattern=r'^/site$'))
+async def site_check_command(event):
+    user_id = event.sender_id
+    if is_admin(user_id):
+        sites = load_sites()
+        site_type = "Bot Sites (shopixsites.txt)"
+    else:
+        sites = get_user_sites_sync(user_id)
+        site_type = "Your Personal Sites"
+
+    if not sites:
+        await event.reply(premium_emoji("❌ **No sites available to check!**\nUse `/uploadsites` (Admin) or `/addsite url` first."), parse_mode="html")
+        return
+
+    msg = await event.reply(premium_emoji(f"""<b>⚡ Site Checker Started</b>
+👤 <b>Mode:</b> {site_type}
+📊 <b>Total Sites:</b> <code>{len(sites)}</code>
+🔍 <b>Checking & Removing Dead...</b>"""), parse_mode="html")
+
+    alive, dead = await fast_site_check(sites)
+
+    # Dead sites ko permanently delete kar ke sirf alive save karna
+    if is_admin(user_id):
+        async with aiofiles.open(SITES_FILE, 'w', encoding='utf-8') as f:
+            for s in alive:
+                await f.write(f"{s}\n")
+    else:
+        data = await load_user_sites()
+        data[str(user_id)] = alive
+        await save_user_sites(data)
+
+    # Working sites ki file bhejna
+    if alive:
+        txt_file = f"working_sites_{user_id}.txt"
+        async with aiofiles.open(txt_file, 'w', encoding='utf-8') as f:
+            await f.write("\n".join(alive))
+        await bot.send_message(user_id, premium_emoji(f"📄 <b>{len(alive)} Working Sites Saved!</b>"), file=txt_file, parse_mode="html")
+        try:
+            os.remove(txt_file)
+        except Exception:
+            pass
+
+    await msg.edit(premium_emoji(f"""<b>✅ Site Check Complete!</b>
+━━━━━━━━━━━━━━━━━━━━
+📊 <b>Total Checked:</b> <code>{len(sites)}</code>
+✅ <b>Alive (Kept):</b> <code>{len(alive)}</code>
+🗑 <b>Dead (Deleted):</b> <code>{dead}</code>
+━━━━━━━━━━━━━━━━━━━━
+⚡ <i>List updated — Dead sites removed automatically!</i>"""), parse_mode="html")
+
+# ---- /proxy (Check Proxies & Auto-Delete Dead) ----
+@bot.on(events.NewMessage(pattern=r'^/proxy$'))
+async def proxy_command(event):
+    user_id = event.sender_id
+    if not is_admin(user_id):
+        await event.reply(premium_emoji("❌ **Access Denied**\n\nOnly admin can check & clean global proxies."), parse_mode="html")
+        return
+
+    proxies = load_proxies()
+    if not proxies:
+        await event.reply(premium_emoji("❌ **No proxies in proxy.txt!**\nUse `/uploadproxy` or `/addproxy` first."), parse_mode="html")
+        return
+
+    total = len(proxies)
+    status_msg = await event.reply(premium_emoji(f"""<b>⚡ Proxy Checker Started</b>
+📊 <b>Total Proxies:</b> <code>{total}</code>
+🔍 <b>Checking & Removing Dead...</b>"""), parse_mode="html")
+
+    alive_proxies = []
+    dead_proxies = []
+    checked = 0
+    batch_size = 15  # Ek saath 15 proxies check hongi (fast speed)
+
+    for i in range(0, total, batch_size):
+        batch = proxies[i:i + batch_size]
+        results = await asyncio.gather(*[check_proxy(p) for p in batch], return_exceptions=True)
+
+        for proxy, res in zip(batch, results):
+            checked += 1
+            if isinstance(res, dict) and res.get('alive'):
+                alive_proxies.append(proxy)
+            else:
+                dead_proxies.append(proxy)
+
+        try:
+            await status_msg.edit(premium_emoji(f"""<b>🔄 Checking Proxies...</b>
+━━━━━━━━━━━━━━━━━━━━
+✅ <b>Alive:</b> <code>{len(alive_proxies)}</code>
+❌ <b>Dead:</b> <code>{len(dead_proxies)}</code>
+📊 <b>Progress:</b> <code>{checked}/{total}</code>"""), parse_mode="html")
+        except Exception:
+            pass
+
+    # Dead proxies ko delete kar ke sirf alive proxies ko proxy.txt mein save karna
+    async with aiofiles.open(PROXY_FILE, 'w', encoding='utf-8') as f:
+        for p in alive_proxies:
+            await f.write(f"{p}\n")
+
+    # Working proxies ki file bhejna
+    if alive_proxies:
+        txt_file = f"working_proxies_{user_id}.txt"
+        async with aiofiles.open(txt_file, 'w', encoding='utf-8') as f:
+            await f.write("\n".join(alive_proxies))
+        await bot.send_message(user_id, premium_emoji(f"📄 <b>{len(alive_proxies)} Working Proxies Saved!</b>"), file=txt_file, parse_mode="html")
+        try:
+            os.remove(txt_file)
+        except Exception:
+            pass
+
+    await status_msg.edit(premium_emoji(f"""<b>✅ Proxy Check Complete!</b>
+━━━━━━━━━━━━━━━━━━━━
+📊 <b>Total Checked:</b> <code>{total}</code>
+✅ <b>Alive (Kept):</b> <code>{len(alive_proxies)}</code>
+🗑 <b>Dead (Deleted):</b> <code>{len(dead_proxies)}</code>
+━━━━━━━━━━━━━━━━━━━━
+⚡ <i>proxy.txt updated — Dead proxies deleted automatically!</i>"""), parse_mode="html")
+
 # ---- /rm ----
 @bot.on(events.NewMessage(pattern=r'^/rm\s+(.+)'))
 async def remove_user_site_cmd(event):
