@@ -2730,13 +2730,7 @@ async def start(event):
         plan = "⭐ ꜰʀᴇᴇ"
         joined = "ᴛʀɪᴀʟ"
         plan_emoji = "⭐"
-    if await is_joined_channel(user_id):
-        welcome_msg = f"""<b></b>
-<b>👑 ᴜsᴇʀ: <a href="tg://user?id={user_id}">{first_name}</a></b>
-<b>✅ ᴜsᴇʀ ɪᴅ: <code>{user_id}</code></b>
-<b>{plan_emoji} ᴀᴄᴄᴇss: {plan}</b>
-<b>✅ ᴊᴏɪɴᴇᴅ: {joined}</b>
-━━━━━━━━━━━━━━━━━━━━
+    
 <b>👇 sᴇʟᴇᴄᴛ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ:</b>"""
         main_buttons = [
             [Button.inline("ᴄʜᴇᴄᴋᴇʀ", b"checker", style="danger"), Button.inline("ʙᴜʏ ɴᴏᴡ", b"buy", style="danger")],
