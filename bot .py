@@ -19,7 +19,9 @@ import urllib.parse
 
 # ===================== MULTIPLE SHOPIFY APIS =====================
 SHOPIFY_APIS = [
-    
+    'https://afunx-0cece6049c30.herokuapp.com/shopify',
+    'https://afuona-2e2060d202b7.herokuapp.com/shopify',
+    'https://afuonax-757112f9aa0f.herokuapp.com/shopify'
 ]
 
 def get_api():
@@ -28,11 +30,10 @@ def get_api():
 # Bot Configuration
 API_ID ='21124241' 
 API_HASH = 'b7ddce3d3683f54be788fddae73fa468'
-BOT_TOKEN = '8640129584:AAHONUWjpPCDOq_rGrDr5QKZt0sL8voPvas'
-ADMIN_ID = 1624840921
-KEY_ADMINS = {6124760730,8640129584}
+BOT_TOKEN = '8692522690:AAHwKhCs7VgnRNwchV1a-pwip09HFNEmPH4'
+ADMIN_ID = 6124760730
+KEY_ADMINS = {6124760730}
 
-CHANNEL_USERNAME = "foritshopi"
 
 # File paths
 PREMIUM_FILE = 'premium.txt'
@@ -46,7 +47,7 @@ KEYS_FILE = "keys.txt"
 BLOCK_FILE = "blocked_users.txt"
 DAILY_USAGE_FILE = "daily_usage.json"
 RZ_SITES_FILE = 'rz_sites.txt'
-PHOTO_URL = "https://i.postimg.cc/htbx1g5P/orion.png"
+PHOTO_URL = "https://i.postimg.cc/cHqzDFfm/Shopi-X-Checker-Crimson-Glassbound-Anime-Power-1.png"
 
 # Initialize bot
 bot = TelegramClient('lll-forit--babu_bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
