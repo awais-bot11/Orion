@@ -23,7 +23,7 @@ BOT_NAME = "Shopify Checker"
 SHOPIFY_APIS = [
     'https://afunx-0cece6049c30.herokuapp.com/shopify',
     'https://afuona-2e2060d202b7.herokuapp.com/shopify',
-    'https://afuonax-757112f9aa0f.herokuapp.com/shopify'",
+    'https://afuonax-757112f9aa0f.herokuapp.com/shopify'"
     # "https://your-second-api-url.com/shopify",
     # "https://your-third-api-url.com/shopify",
 ]
