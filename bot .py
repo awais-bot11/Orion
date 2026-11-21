@@ -38,7 +38,7 @@ KEY_ADMINS = {6124760730,}
 CHANNEL_ID = -1003681098722
 
 
-CHANNEL_USERNAME = "Scrshopibot"
+CHANNEL_USERNAME = "@Shupifybot"
 
 # File paths
 PREMIUM_FILE = 'premium.txt'
@@ -2468,7 +2468,7 @@ async def generate_key_cmd(event):
         for i, key in enumerate(keys, 1):
             await f.write(f"{i}. {key}\n")
         await f.write("\n" + "=" * 30 + "\n")
-        await f.write("Bot: @foritxshopi_bot\n")
+        await f.write("Bot: @Shupifybot\n")
         await f.write("Redeem: /redeem [key]\n")
     msg = f"""<b>𝗞𝗲𝘆𝘀 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗲𝗱</b>  ✅
 ━━━━━━━━━━━━━━━━━
@@ -2773,7 +2773,7 @@ async def start(event):
 ━━━━━━━━━━━━━━━━━━━━
 <b>⚠️ ᴅᴏɴᴏ ᴄʜᴀɴɴᴇʟ ᴊᴏɪɴ ᴋᴀʀᴏ ꜰɪʀ ᴠᴇʀɪꜰʏ ᴋᴀʀᴏ!</b>"""
         join_buttons = [
-            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1", f"https://t.me/{CHANNEL_USERNAME}", style="primary")],
+            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1", "https://t.me/+nDTSPWA3qQ40OWE0", style="primary")],
             [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2", "https://t.me/+mkAolaWHfb02OGRk", style="primary")],
             [Button.inline("✅ ᴠᴇʀɪꜰʏ", b"verify", style="success")],
         ]
