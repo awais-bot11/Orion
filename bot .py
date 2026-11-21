@@ -21,7 +21,9 @@ BOT_NAME = "Shopify Checker"
 
 # Yahan apni Shopify APIs add karein (Round-Robin order mein use hongi)
 SHOPIFY_APIS = [
-    "https://nemesisshopify-production-807f.up.railway.app/shopify",
+    'https://afunx-0cece6049c30.herokuapp.com/shopify',
+    'https://afuona-2e2060d202b7.herokuapp.com/shopify',
+    'https://afuonax-757112f9aa0f.herokuapp.com/shopify'",
     # "https://your-second-api-url.com/shopify",
     # "https://your-third-api-url.com/shopify",
 ]
