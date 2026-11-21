@@ -2708,8 +2708,6 @@ async def plan_cmd(event):
 🤖 <b>ᴘᴏᴡᴇʀᴇᴅ ʙʏ ꜰᴏʀ ɪᴛ</b>"""
     await event.reply(premium_emoji(msg), parse_mode='html')
 
-
-
 # ---- /start ----
 @bot.on(events.NewMessage(pattern='/start'))
 async def start(event):
@@ -2746,7 +2744,7 @@ async def start(event):
             [Button.url("ᴜᴘᴅᴀᴛᴇs", f"https://t.me/{CHANNEL_USERNAME}", style="success"), Button.url("ɢʀᴏᴜᴘ", f"https://t.me/{CHANNEL_USERNAME}", style="success")],
         ]
         await bot.send_file(event.chat_id, file=PHOTO_URL, caption=premium_emoji(welcome_msg), buttons=main_buttons, parse_mode="html", force_document=False)
-    else
+        
 # ---- CALLBACK MENUS ----
 @bot.on(events.CallbackQuery(pattern=b"checker"))
 async def checker_menu(event):
