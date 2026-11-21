@@ -19,7 +19,9 @@ import urllib.parse
 
 # ===================== MULTIPLE SHOPIFY APIS =====================
 SHOPIFY_APIS = [
-    "https://nemesisshopify-production-807f.up.railway.app/shopify",
+    'https://afunx-0cece6049c30.herokuapp.com/shopify',
+    'https://afuona-2e2060d202b7.herokuapp.com/shopify',
+    'https://afuonax-757112f9aa0f.herokuapp.com/shopify'
 ]
 
 def get_api():
@@ -28,11 +30,11 @@ def get_api():
 # Bot Configuration
 API_ID ='21124241' 
 API_HASH = 'b7ddce3d3683f54be788fddae73fa468'
-BOT_TOKEN = '8640129584:AAHONUWjpPCDOq_rGrDr5QKZt0sL8voPvas'
-ADMIN_ID = 1624840921
-KEY_ADMINS = {6124760730,8640129584}
+BOT_TOKEN = '8692522690:AAHwKhCs7VgnRNwchV1a-pwip09HFNEmPH4'
+ADMIN_ID = 6124760730
+KEY_ADMINS = {6124760730}
 
-CHANNEL_USERNAME = "foritshopi"
+
 
 # File paths
 PREMIUM_FILE = 'premium.txt'
@@ -2706,89 +2708,24 @@ async def plan_cmd(event):
 🤖 <b>ᴘᴏᴡᴇʀᴇᴅ ʙʏ ꜰᴏʀ ɪᴛ</b>"""
     await event.reply(premium_emoji(msg), parse_mode='html')
 
-# ---- JOIN CHANNEL ----
-async def is_joined_channel(user_id):
-    try:
-        channel = await bot.get_entity(CHANNEL_USERNAME)
-        try:
-            await bot.get_participant(channel, user_id)
-            return True
-        except:
-            try:
-                await bot.get_permissions(channel, user_id)
-                return True
-            except:
-                return False
-    except:
-        return False
-
-# ---- /start ----
 @bot.on(events.NewMessage(pattern='/start'))
 async def start(event):
     user_id = event.sender_id
+    
+    # 🚫 Blocked user check (isko rehne do agar tha)
+    if is_blocked(user_id):
+        await event.reply("🚫 You are blocked.")
+        return
+    
     save_user(user_id)
-    try:
-        sender = await event.get_sender()
-        first_name = sender.first_name or "Unknown"
-    except:
-        first_name = "Unknown"
-    if is_admin(user_id):
-        plan = "👑 ᴀᴅᴍɪɴ"
-        joined = "∞ ʟɪꜰᴇᴛɪᴍᴇ"
-        plan_emoji = "👑"
-    elif is_premium(user_id):
-        plan = "💎 ᴘʀᴇᴍɪᴜᴍ"
-        joined = "ᴀᴄᴛɪᴠᴇ"
-        plan_emoji = "💎"
-    else:
-        plan = "⭐ ꜰʀᴇᴇ"
-        joined = "ᴛʀɪᴀʟ"
-        plan_emoji = "⭐"
-    if await is_joined_channel(user_id):
-        welcome_msg = f"""<b></b>
-<b>👑 ᴜsᴇʀ: <a href="tg://user?id={user_id}">{first_name}</a></b>
-<b>✅ ᴜsᴇʀ ɪᴅ: <code>{user_id}</code></b>
-<b>{plan_emoji} ᴀᴄᴄᴇss: {plan}</b>
-<b>✅ ᴊᴏɪɴᴇᴅ: {joined}</b>
-━━━━━━━━━━━━━━━━━━━━
-<b>👇 sᴇʟᴇᴄᴛ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ:</b>"""
-        main_buttons = [
-            [Button.inline("ᴄʜᴇᴄᴋᴇʀ", b"checker", style="danger"), Button.inline("ʙᴜʏ ɴᴏᴡ", b"buy", style="danger")],
-            [Button.inline("ᴛᴏᴏʟs", b"tools_menu", style="danger"), Button.inline("sᴜᴘᴘᴏʀᴛ", b"support_menu", style="danger")],
-            [Button.url("ᴜᴘᴅᴀᴛᴇs", f"https://t.me/{CHANNEL_USERNAME}", style="success"), Button.url("ɢʀᴏᴜᴘ", f"https://t.me/{CHANNEL_USERNAME}", style="success")],
-        ]
-        await bot.send_file(event.chat_id, file=PHOTO_URL, caption=premium_emoji(welcome_msg), buttons=main_buttons, parse_mode="html", force_document=False)
-    else:
-        join_msg = f"""<b>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ꜰᴏʀ ɪᴛ ʙᴏᴛ</b>
-━━━━━━━━━━━━━━━━━━━━
-<b>👑 ᴜsᴇʀ: <a href="tg://user?id={user_id}">{first_name}</a></b>
-<b>✅ ᴜsᴇʀ ɪᴅ: <code>{user_id}</code></b>
-<b>{plan_emoji} ᴀᴄᴄᴇss: {plan}</b>
-━━━━━━━━━━━━━━━━━━━━
-<b>⚠️ ᴅᴏɴᴏ ᴄʜᴀɴɴᴇʟ ᴊᴏɪɴ ᴋᴀʀᴏ ꜰɪʀ ᴠᴇʀɪꜰʏ ᴋᴀʀᴏ!</b>"""
-        join_buttons = [
-            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1", f"https://t.me/{CHANNEL_USERNAME}", style="primary")],
-            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2", "https://t.me/foritgc", style="primary")],
-            [Button.inline("✅ ᴠᴇʀɪꜰʏ", b"verify", style="success")],
-        ]
-        await bot.send_file(event.chat_id, file=PHOTO_URL, caption=premium_emoji(join_msg), buttons=join_buttons, parse_mode="html", force_document=False)
-
-@bot.on(events.CallbackQuery(pattern=b"verify"))
-async def verify_handler(event):
-    user_id = event.sender_id
-    joined_ch1 = await is_joined_channel(user_id)
-    try:
-        ch2 = await bot.get_entity("https://t.me/foritshopi")
-        await bot.get_permissions(ch2, user_id)
-        joined_ch2 = True
-    except:
-        joined_ch2 = False
-    if joined_ch1 and joined_ch2:
-        save_verified(user_id)
-        await event.edit(premium_emoji("✅ ᴠᴇʀɪꜰɪᴇᴅ sᴜᴄᴄᴇssꜰᴜʟʟʏ!\nᴀʙ /start ᴋᴀʀᴏ."), parse_mode="html")
-    else:
-        await event.answer("❌ ᴅᴏɴᴏ ᴄʜᴀɴɴᴇʟ ᴊᴏɪɴ ᴋᴀʀᴏ ᴘᴇʜʟᴇ!", alert=True)
-
+    
+    # ✅ Direct welcome message — koi channel check nahi
+    await event.reply(
+        premium_emoji("🎉 Welcome to the bot!"),
+        buttons=kb_bot_link(),   # ya jo bhi buttons the
+        parse_mode="html"
+    )
+            
 # ---- CALLBACK MENUS ----
 @bot.on(events.CallbackQuery(pattern=b"checker"))
 async def checker_menu(event):
