@@ -19,7 +19,9 @@ import urllib.parse
 
 # ===================== MULTIPLE SHOPIFY APIS =====================
 SHOPIFY_APIS = [
-    "https://afunx-0cece6049c30.herokuapp.com/shopify"
+    'https://afunx-0cece6049c30.herokuapp.com/shopify',
+    'https://afuona-2e2060d202b7.herokuapp.com/shopify',
+    'https://afuonax-757112f9aa0f.herokuapp.com/shopify
 ]
 
 def get_api():
@@ -28,7 +30,7 @@ def get_api():
 # Bot Configuration
 API_ID = 21124241
 API_HASH = 'b7ddce3d3683f54be788fddae73fa468'
-BOT_TOKEN = '8967544580:AAGwKzj6P2KHSDHiNqkZASc9RrLiVVLBf6I'
+BOT_TOKEN = '8951020709:AAFZOHxEjUAXwJLZ_dznrEfN_tg69xy7HsM'
 ADMIN_ID = 6124760730
 KEY_ADMINS = {6124760730}
 
