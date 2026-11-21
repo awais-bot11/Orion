@@ -48,7 +48,7 @@ KEYS_FILE = "keys.txt"
 BLOCK_FILE = "blocked_users.txt"
 DAILY_USAGE_FILE = "daily_usage.json"
 RZ_SITES_FILE = 'rz_sites.txt'
-PHOTO_URL = "https://i.postimg.cc/htbx1g5P/orion.png"
+PHOTO_URL = "https://i.postimg.cc/cHqzDFfm/Shopi-X-Checker-Crimson-Glassbound-Anime-Power-1.png"
 
 # Initialize bot
 bot = TelegramClient('lll-forit--babu_bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
@@ -2712,20 +2712,72 @@ async def plan_cmd(event):
 async def start(event):
     user_id = event.sender_id
     
-    # 🚫 Blocked user check (isko rehne do agar tha)
+    # Block check
     if is_blocked(user_id):
-        await event.reply("🚫 You are blocked.")
+        await event.reply(premium_emoji("🚫 You are blocked."))
         return
-    
+        
     save_user(user_id)
     
-    # ✅ Direct welcome message — koi channel check nahi
-    await event.reply(
-        premium_emoji("🎉 Welcome to the bot!"),
-        buttons=kb_bot_link(),   # ya jo bhi buttons the
-        parse_mode="html"
-    )
-            
+    # User ka naam nikalne ke liye
+    try:
+        sender = await event.get_sender()
+        first_name = sender.first_name or "User"
+    except:
+        first_name = "User"
+        
+    # Access/Plan check
+    if is_admin(user_id):
+        access = "👑 ADMIN"
+    elif is_premium(user_id):
+        access = "💎 PREMIUM"
+    else:
+        access = "❌ FREE"
+
+    # Pehli picture jaisa Caption Text
+    caption = f"""👑 <b>USER:</b> <i>{first_name}</i>
+✅ <b>USER ID:</b> {user_id}
+👑 <b>ACCESS:</b> {access}
+
+👇 <b>SELECT AN OPTION BELOW:</b>"""
+
+    # Pehli picture jaisa Buttons ka layout
+    buttons = [
+        [Button.inline("CHECKER", b"btn_checker"), Button.inline("BUY PLAN", b"btn_buy")],
+        [Button.inline("TOOLS", b"btn_tools"), Button.inline("SUPPORT", b"btn_support")],
+        [Button.url("UPDATES ↗️", "https://t.me/your_updates_channel"), Button.url("GROUP ↗️", "https://t.me/your_group_link")]
+    ]
+
+    # Photo ke sath message bhejna
+    try:
+        await bot.send_file(
+            user_id, 
+            PHOTO_URL, 
+            caption=premium_emoji(caption), 
+            buttons=buttons, 
+            parse_mode='html'
+        )
+    except Exception as e:
+        # Agar photo mein error aye toh simple text bhej de
+        await event.reply(premium_emoji(caption), buttons=buttons, parse_mode='html')
+
+@bot.on(events.CallbackQuery(data=b"btn_checker"))
+async def cb_checker(event):
+    await event.answer("Checker feature coming soon...", alert=True)
+    # Yahan tum apna checker start karne ka logic likh sakte ho
+
+@bot.on(events.CallbackQuery(data=b"btn_buy"))
+async def cb_buy(event):
+    await event.answer("Contact Admin to buy plan!", alert=True)
+
+@bot.on(events.CallbackQuery(data=b"btn_tools"))
+async def cb_tools(event):
+    await event.answer("Tools menu coming soon...", alert=True)
+
+@bot.on(events.CallbackQuery(data=b"btn_support"))
+async def cb_support(event):
+    await event.answer("Support: @YourSupportUsername", alert=True)
+ 
 # ---- CALLBACK MENUS ----
 @bot.on(events.CallbackQuery(pattern=b"checker"))
 async def checker_menu(event):
