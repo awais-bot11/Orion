@@ -2770,7 +2770,7 @@ async def start(event):
 ━━━━━━━━━━━━━━━━━━━━
 <b>⚠️ ᴅᴏɴᴏ ᴄʜᴀɴɴᴇʟ ᴊᴏɪɴ ᴋᴀʀᴏ ꜰɪʀ ᴠᴇʀɪꜰʏ ᴋᴀʀᴏ!</b>"""
         join_buttons = [
-            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1", f"https://t.me/{CHANNEL_USERNAME}", style="primary")],
+            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1", "https://t.me/shopilogs", style="primary")],
             [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2", "https://t.me/+nDTSPWA3qQ40OWE0", style="primary")],
             [Button.inline("✅ ᴠᴇʀɪꜰʏ", b"verify", style="success")],
         ]
