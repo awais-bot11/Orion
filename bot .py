@@ -30,11 +30,11 @@ def get_api():
 # Bot Configuration
 API_ID ='21124241' 
 API_HASH = 'b7ddce3d3683f54be788fddae73fa468'
-BOT_TOKEN = '8692522690:AAHwKhCs7VgnRNwchV1a-pwip09HFNEmPH4'
+BOT_TOKEN = '8866582364:AAFWWAcFm8gGY8Muh658q6K5FWpUJFzWRPE'
 ADMIN_ID = 6124760730
 KEY_ADMINS = {6124760730}
 
-CHANNEL_USERNAME = "@Myselfshopibot"
+CHANNEL_USERNAME = "@Awaisshopibot"
 
 # File paths
 PREMIUM_FILE = 'premium.txt'
@@ -991,6 +991,20 @@ RES✅ → <code>{response_msg}</code>
     except Exception as e:
         print(f"send_realtime_hit_group error: {e}")
 
+        # Logs channel mein bhejna (Agar set hai toh)
+        log_channel = get_logs_channel()
+        if log_channel:
+            try:
+                # Yahan GIF bhejne ka logic
+                for path in _HIT_GIFT_PATHS:
+                    if os.path.exists(path):
+                        await bot.send_file(log_channel, path, caption=premium_emoji(admin_msg), parse_mode='html')
+                        break
+                else:
+                    await bot.send_message(log_channel, premium_emoji(admin_msg), parse_mode='html')
+            except Exception as e:
+                print(f"Log channel error: {e}")
+
 async def send_realtime_hit_dm(user_id, result, hit_type, username):
     try:
         if result["status"] not in ("Approved", "Charged"):
@@ -1468,6 +1482,83 @@ async def send_to_chat(chat_id, text, **kwargs):
         await bot.send_message(chat_id, text, **kwargs)
     except Exception as e:
         print(f"Send to chat error: {e}")
+
+# ===================== /setlogs COMMAND =====================
+LOGS_FILE = 'logs_channel.txt'
+
+def get_logs_channel():
+    if os.path.exists(LOGS_FILE):
+        try:
+            with open(LOGS_FILE, 'r') as f:
+                return f.read().strip()
+        except:
+            return None
+    return None
+
+@bot.on(events.NewMessage(pattern=r'^/setlogs(?:\s+(.+))?'))
+async def set_logs_cmd(event):
+    user_id = event.sender_id
+    if not is_admin(user_id):
+        await event.reply(premium_emoji("❌ **Access Denied**\n\nOnly admins can use this command."))
+        return
+
+    target_channel = event.pattern_match.group(1)
+    if not target_channel:
+        await event.reply(premium_emoji("⚠️ <b>Usage:</b> <code>/setlogs -100123456789</code>\n\n(Channel ID daalein jahan logs aur GIFs bhejne hain)"), parse_mode="html")
+        return
+
+    target_channel = target_channel.strip()
+    
+    try:
+        # Check karna ke bot us channel mein hai ya nahi
+        channel = await bot.get_entity(target_channel)
+        await bot.send_message(channel.id, "✅ **Logs Channel Set Successfully!**\n\nAb se bot ke saare logs aur GIFs yahan aayenge.", parse_mode="html")
+        
+        # File mein save karna
+        with open(LOGS_FILE, 'w') as f:
+            f.write(str(channel.id))
+            
+        await event.reply(premium_emoji(f"✅ <b>Logs Channel Set!</b>\n\nID: <code>{channel.id}</code>\nTitle: {channel.title}"), parse_mode="html")
+    except Exception as e:
+        await event.reply(premium_emoji(f"❌ <b>Error:</b> Bot us channel mein add nahi hai ya ID galat hai.\n\nPehle bot ko us channel mein Admin banayein.\n\n<i>{str(e)}</i>"), parse_mode="html")
+
+# ===================== /setgroup COMMAND =====================
+GROUP_FILE = 'required_group.txt'
+
+def get_required_group():
+    if os.path.exists(GROUP_FILE):
+        try:
+            with open(GROUP_FILE, 'r') as f:
+                return f.read().strip()
+        except:
+            return None
+    return None
+
+@bot.on(events.NewMessage(pattern=r'^/setgroup(?:\s+(.+))?'))
+async def set_group_cmd(event):
+    user_id = event.sender_id
+    if not is_admin(user_id):
+        await event.reply(premium_emoji("❌ **Access Denied**\n\nOnly admins can use this command."))
+        return
+
+    target_group = event.pattern_match.group(1)
+    if not target_group:
+        await event.reply(premium_emoji("⚠️ <b>Usage:</b> <code>/setgroup @channelusername</code> ya <code>/setgroup -100123456789</code>"), parse_mode="html")
+        return
+
+    target_group = target_group.strip()
+    
+    try:
+        # Check karna ke bot us group/channel mein hai ya nahi
+        channel = await bot.get_entity(target_group)
+        
+        # File mein save karna
+        with open(GROUP_FILE, 'w') as f:
+            f.write(str(channel.id))
+            
+        await event.reply(premium_emoji(f"✅ <b>Verification Channel Set!</b>\n\nID: <code>{channel.id}</code>\nTitle: {channel.title}\n\nAb bot /start par pehle verification check karega."), parse_mode="html")
+    except Exception as e:
+        await event.reply(premium_emoji(f"❌ <b>Error:</b> Bot us channel/group mein add nahi hai ya username galat hai.\n\nPehle bot ko us channel mein Admin banayein.\n\n<i>{str(e)}</i>"), parse_mode="html")
 
 # ---- /checkapi ----
 @bot.on(events.NewMessage(pattern='/checkapi'))
@@ -2708,7 +2799,7 @@ async def plan_cmd(event):
 🤖 <b>ᴘᴏᴡᴇʀᴇᴅ ʙʏ ꜰᴏʀ ɪᴛ</b>"""
     await event.reply(premium_emoji(msg), parse_mode='html')
 
-# ---- /start (Bina Channel Verification ke) ----
+# ---- /start (With Dynamic Group Verification) ----
 @bot.on(events.NewMessage(pattern='/start'))
 async def start(event):
     user_id = event.sender_id
@@ -2720,7 +2811,6 @@ async def start(event):
     except:
         first_name = "Unknown"
         
-    # User ka plan check
     if is_admin(user_id):
         plan = "👑 ᴀᴅᴍɪɴ"
         joined = "∞ ʟɪꜰᴇᴛɪᴍᴇ"
@@ -2734,24 +2824,77 @@ async def start(event):
         joined = "ᴛʀɪᴀʟ"
         plan_emoji = "⭐"
 
-    # Direct Welcome Message (No verification check)
-    welcome_msg = f"""<b></b>
+    # Check karna ke koi required group set hai ya nahi
+    req_group = get_required_group()
+    is_verified = True # Default mein sab allowed hain
+    
+    # Agar group set hai, toh check karo (Admin ke liye check nahi hoga)
+    if req_group and not is_admin(user_id):
+        try:
+            # User ko channel mein check karna
+            await bot.get_permissions(int(req_group), user_id)
+            is_verified = True
+        except:
+            is_verified = False
+
+    if is_verified:
+        welcome_msg = f"""<b></b>
 <b>👑 ᴜsᴇʀ: <a href="tg://user?id={user_id}">{first_name}</a></b>
 <b>✅ ᴜsᴇʀ ɪᴅ: <code>{user_id}</code></b>
 <b>{plan_emoji} ᴀᴄᴄᴇss: {plan}</b>
 <b>✅ ᴊᴏɪɴᴇᴅ: {joined}</b>
 ━━━━━━━━━━━━━━━━━━━━
 <b>👇 sᴇʟᴇᴄᴛ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ:</b>"""
+        main_buttons = [
+            [Button.inline("ᴄʜᴇᴄᴋᴇʀ", b"checker"), Button.inline("ʙᴜʏ ɴᴏᴡ", b"buy")],
+            [Button.inline("ᴛᴏᴏʟs", b"tools_menu"), Button.inline("sᴜᴘᴘᴏʀᴛ", b"support_menu")],
+            [Button.url("ᴜᴘᴅᴀᴛᴇs", "https://t.me/foritgc"), Button.url("ɢʀᴏᴜᴘ", "https://t.me/foritgc")],
+        ]
+        await bot.send_file(event.chat_id, file=PHOTO_URL, caption=premium_emoji(welcome_msg), buttons=main_buttons, parse_mode="html")
+    else:
+        # Verification Message
+        join_msg = f"""<b>ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ꜰᴏʀ ɪᴛ ʙᴏᴛ</b>
+━━━━━━━━━━━━━━━━━━━━
+<b>👑 ᴜsᴇʀ: <a href="tg://user?id={user_id}">{first_name}</a></b>
+<b>✅ ᴜsᴇʀ ɪᴅ: <code>{user_id}</code></b>
+<b>{plan_emoji} ᴀᴄᴄᴇss: {plan}</b>
+━━━━━━━━━━━━━━━━━━━━
+<b>⚠️ ᴘᴇʜʟᴇ ᴄʜᴀɴɴᴇʟ ᴊᴏɪɴ ᴋᴀʀᴏ ꜰɪʀ ᴠᴇʀɪꜰʏ ᴋᴀʀᴏ!</b>"""
+        
+        # Channel ka link nikalna
+        try:
+            ch = await bot.get_entity(int(req_group))
+            if ch.username:
+                join_link = f"https://t.me/{ch.username}"
+            else:
+                join_link = "https://t.me/foritgc" # Fallback link
+        except:
+            join_link = "https://t.me/foritgc"
+
+        join_buttons = [
+            [Button.url("🔗 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ", join_link)],
+            [Button.inline("✅ ᴠᴇʀɪꜰʏ", b"verify_group")],
+        ]
+        await bot.send_file(event.chat_id, file=PHOTO_URL, caption=premium_emoji(join_msg), buttons=join_buttons, parse_mode="html")
+
+
+# ---- VERIFY BUTTON HANDLER ----
+@bot.on(events.CallbackQuery(pattern=b"verify_group"))
+async def verify_group_handler(event):
+    user_id = event.sender_id
+    req_group = get_required_group()
     
-    # Tumhare purane exact buttons
-    main_buttons = [
-        [Button.inline("ᴄʜᴇᴄᴋᴇʀ", b"checker", style="danger"), Button.inline("ʙᴜʏ ɴᴏᴡ", b"buy", style="danger")],
-        [Button.inline("ᴛᴏᴏʟs", b"tools_menu", style="danger"), Button.inline("sᴜᴘᴘᴏʀᴛ", b"support_menu", style="danger")],
-        [Button.url("ᴜᴘᴅᴀᴛᴇs", f"https://t.me/{CHANNEL_USERNAME}", style="success"), Button.url("ɢʀᴏᴜᴘ", f"https://t.me/{CHANNEL_USERNAME}", style="success")],
-    ]
-    
-    # Photo send karna
-    await bot.send_file(event.chat_id, file=PHOTO_URL, caption=premium_emoji(welcome_msg), buttons=main_buttons, parse_mode="html", force_document=False)
+    if not req_group:
+        await event.answer("✅ Verification Off hai!", alert=True)
+        return
+
+    try:
+        await bot.get_permissions(int(req_group), user_id)
+        # Verified successfully
+        save_verified(user_id)
+        await event.edit(premium_emoji("✅ ᴠᴇʀɪꜰɪᴇᴅ sᴜᴄᴄᴇssꜰᴜʟʟʏ!\nᴀʙ /start ᴋᴀʀᴏ."), parse_mode="html")
+    except:
+        await event.answer("❌ Pehle Channel Join Karo!", alert=True)
 
 # ---- CALLBACK MENUS ----
 @bot.on(events.CallbackQuery(pattern=b"checker"))
