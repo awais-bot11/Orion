@@ -3392,9 +3392,9 @@ async def stop_handler(event):
 async def single_cc_check(event):
     user_id = event.sender_id
     save_user(user_id)
-    if not await is_joined_channel(user_id):
-        await event.reply("🚫 Pehle channel join karke verify karo!")
-        return
+    
+    # 🟢 CHANNEL VERIFICATION WALA CODE YAHAN SE HATA DIYA GAYA HAI 🟢
+
     proxies = load_proxies()
     if not proxies:
         await event.reply(premium_emoji("""<b>❌ NO PROXY IN proxy.txt!</b>"""), parse_mode="html")
@@ -3459,7 +3459,7 @@ async def single_cc_check(event):
             status_text = "Charged 💎"
         elif result['status'] == 'Approved':
             status_emoji = "🔥"
-            status_text = "Live 🔥"
+            status_text = "Live 🔥"   # Yahan space fix kar diya hai
         elif result['status'] == 'OTP':
             status_emoji = "🔑"
             status_text = "OTP Required 🔑"
@@ -3503,7 +3503,7 @@ Bin ➳ <code>{brand} - {bank} - {country} {flag}</code>
             await status_msg.edit(premium_emoji(f"❌ Error: {str(e)[:80]}"), parse_mode='html')
         except:
             await event.reply(premium_emoji(f"❌ Error: {str(e)[:80]}"), parse_mode='html')
-
+            
 # ---- /chk (Mass Check) ----
 @bot.on(events.NewMessage(pattern='/chk'))
 async def check_command(event):
@@ -3532,9 +3532,9 @@ async def check_command(event):
         username = sender.username if sender.username else f"user_{user_id}"
     except:
         username = f"user_{user_id}"
-    if not await is_joined_channel(user_id):
-        await event.reply("🚫 Pehle channel join karke verify karo!")
-        return
+    
+    # 🟢 YAHAN SE CHANNEL VERIFICATION WALA CODE HATA DIYA GAYA HAI 🟢
+
     if not event.reply_to_msg_id:
         await event.reply("❌ Reply to .txt file.")
         return
@@ -3570,6 +3570,7 @@ async def check_command(event):
         'reply_msg': reply_msg, 'status_msg_id': status_msg.id,
         'user_sites': user_sites, 'global_sites': global_sites, 'proxies': proxies
     }
+
 
 @bot.on(events.CallbackQuery(pattern=rb"chk_my_(\d+)"))
 async def chk_my_sites_handler(event):
